@@ -1,2 +1,176 @@
-<!-- Science fair scene HTML file -->
-<html><body><h1>scene_science.html</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene: Science Fair</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #f0fff0;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      background-color: #9b59b6;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
+    #map {
+      background-color: #e6e6fa;
+      height: 400px;
+      position: relative;
+    }
+    .hotspot {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #333;
+      text-align: center;
+      font-size: 28px;
+      line-height: 60px;
+      cursor: pointer;
+    }
+    .hotspot:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .tooltip {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 5px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #notebook, #lead-box {
+      padding: 20px;
+    }
+    #facts {
+      background: #fff;
+      border: 2px solid #333;
+      padding: 10px;
+    }
+    .found { color: green; }
+    .missing { color: red; }
+    #lead {
+      width: 100%;
+      height: 60px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #9b59b6;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #884ea0;
+    }
+    .back-button {
+      display: block;
+      margin: 20px auto;
+      background-color: #888;
+    }
+    .back-button:hover {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧪 Scene: Science Fair</h1>
+
+<div id="map">
+  <div class="hotspot" style="top: 40px; left: 60px;" onclick="addFact('Student Lily Tran demonstrated a solar-powered oven.', 'Who')">
+    👩‍🔬<div class="tooltip">Student</div>
+  </div>
+  <div class="hotspot" style="top: 40px; left: 250px;" onclick="addFact('The fair was held Thursday evening from 5 to 7 p.m.', 'When')">
+    ⏰<div class="tooltip">Time</div>
+  </div>
+  <div class="hotspot" style="top: 150px; left: 90px;" onclick="addFact('The event showcased student science projects.', 'What')">
+    🔬<div class="tooltip">Exhibits</div>
+  </div>
+  <div class="hotspot" style="top: 150px; left: 290px;" onclick="addFact('It took place in the school cafeteria.', 'Where')">
+    🏫<div class="tooltip">Location</div>
+  </div>
+  <div class="hotspot" style="top: 250px; left: 100px;" onclick="addFact('The fair encouraged creativity and STEM exploration.', 'Why')">
+    🎯<div class="tooltip">Purpose</div>
+  </div>
+  <div class="hotspot" style="top: 250px; left: 270px;" onclick="addFact('Projects were judged by local scientists.', 'How')">
+    🧑‍⚖️<div class="tooltip">Judging</div>
+  </div>
+</div>
+
+<div id="notebook">
+  <h2>📝 Your Notebook</h2>
+  <div id="facts">
+    <em>No facts collected yet.</em>
+  </div>
+</div>
+
+<div id="lead-box">
+  <h2>✍️ Write Your News Lead</h2>
+  <textarea id="lead" placeholder="Type your news lead here..."></textarea><br><br>
+  <button onclick="submitLead()">Submit Lead</button>
+  <div id="feedback" style="margin-top:10px;"></div>
+</div>
+
+<a href="index.html"><button class="back-button">🔙 Back to Scene Selection</button></a>
+
+<script>
+  const allCategories = ['Who', 'What', 'When', 'Where', 'Why', 'How'];
+  const categoryFacts = {};
+
+  function addFact(text, ...categories) {
+    categories.forEach(cat => {
+      if (!categoryFacts[cat]) {
+        categoryFacts[cat] = text;
+      }
+    });
+    displayFacts();
+  }
+
+  function displayFacts() {
+    const factsDiv = document.getElementById('facts');
+    let html = '<ul>';
+    allCategories.forEach(cat => {
+      if (categoryFacts[cat]) {
+        html += `<li class='found'>✅ <strong>${cat}:</strong> ${categoryFacts[cat]}</li>`;
+      } else {
+        html += `<li class='missing'>❌ <strong>${cat}:</strong> Not found yet</li>`;
+      }
+    });
+    html += '</ul>';
+    factsDiv.innerHTML = html;
+  }
+
+  function submitLead() {
+    const lead = document.getElementById('lead').value.trim();
+    const feedback = document.getElementById('feedback');
+    if (!lead) {
+      feedback.innerHTML = "<span style='color:red;'>Please write a lead before submitting!</span>";
+      return;
+    }
+    if (lead.length > 200) {
+      feedback.innerHTML = "<span style='color:red;'>Try to make your lead one strong sentence (under 200 characters).</span>";
+      return;
+    }
+    feedback.innerHTML = "<strong>Great work!</strong> Your lead has been submitted.";
+  }
+</script>
+
+</body>
+</html>
