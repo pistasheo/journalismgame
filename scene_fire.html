@@ -1,2 +1,168 @@
-<!-- Fire scene HTML file -->
-<html><body><h1>scene_fire.html</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene: House Fire</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      background-color: #e74c3c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
+    #map {
+      background-color: #eee;
+      height: 400px;
+      position: relative;
+    }
+    .hotspot {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #333;
+      text-align: center;
+      font-size: 28px;
+      line-height: 60px;
+      cursor: pointer;
+    }
+    .hotspot:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .tooltip {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 5px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #notebook, #lead-box {
+      padding: 20px;
+    }
+    #facts {
+      background: #fff;
+      border: 2px solid #333;
+      padding: 10px;
+    }
+    .found { color: green; }
+    .missing { color: red; }
+    #lead {
+      width: 100%;
+      height: 60px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔥 Scene: House Fire</h1>
+
+<div id="map">
+  <div class="hotspot" style="top: 40px; left: 40px;" onclick="addFact('The fire started in the kitchen.', 'What')">
+    👨‍🚒<div class="tooltip">Firefighter</div>
+  </div>
+  <div class="hotspot" style="top: 40px; left: 320px;" onclick="addFact('The fire broke out around 2 a.m. and appears to be accidental.', 'When', 'Why')">
+    👮<div class="tooltip">Police Officer</div>
+  </div>
+  <div class="hotspot" style="top: 160px; left: 80px;" onclick="addFact('No one was hurt, but two cats were rescued by firefighters.', 'Who')">
+    👵<div class="tooltip">Eyewitness</div>
+  </div>
+  <div class="hotspot" style="top: 160px; left: 300px;" onclick="addFact('The fire occurred in a two-story house.', 'Where')">
+    🏠<div class="tooltip">Burned House</div>
+  </div>
+  <div class="hotspot" style="top: 280px; left: 50px;" onclick="addFact('The fire chief stated it took 20 minutes to control the blaze.', 'How')">
+    🚒<div class="tooltip">Fire Chief</div>
+  </div>
+  <div class="hotspot" style="top: 280px; left: 200px;" onclick="addFact('Photos show heavy smoke damage to the second floor.', 'What')">
+    📷<div class="tooltip">Camera Evidence</div>
+  </div>
+  <div class="hotspot" style="top: 280px; left: 340px;" onclick="addFact('I overheard neighbors saying they smelled smoke before the alarms went off.', 'How')">
+    📝<div class="tooltip">Your Notes</div>
+  </div>
+</div>
+
+<div id="notebook">
+  <h2>📝 Your Notebook</h2>
+  <div id="facts">
+    <em>No facts collected yet.</em>
+  </div>
+</div>
+
+<div id="lead-box">
+  <h2>✍️ Write Your News Lead</h2>
+  <textarea id="lead" placeholder="Type your news lead here..."></textarea><br><br>
+  <button onclick="submitLead()">Submit Lead</button>
+  <div id="feedback" style="margin-top:10px;"></div>
+</div>
+
+<script>
+  const allCategories = ['Who', 'What', 'When', 'Where', 'Why', 'How'];
+  const categoryFacts = {};
+
+  function addFact(text, ...categories) {
+    categories.forEach(cat => {
+      if (!categoryFacts[cat]) {
+        categoryFacts[cat] = text;
+      }
+    });
+    displayFacts();
+  }
+
+  function displayFacts() {
+    const factsDiv = document.getElementById('facts');
+    let html = '<ul>';
+    allCategories.forEach(cat => {
+      if (categoryFacts[cat]) {
+        html += `<li class='found'>✅ <strong>${cat}:</strong> ${categoryFacts[cat]}</li>`;
+      } else {
+        html += `<li class='missing'>❌ <strong>${cat}:</strong> Not found yet</li>`;
+      }
+    });
+    html += '</ul>';
+    factsDiv.innerHTML = html;
+  }
+
+  function submitLead() {
+    const lead = document.getElementById('lead').value.trim();
+    const feedback = document.getElementById('feedback');
+    if (!lead) {
+      feedback.innerHTML = "<span style='color:red;'>Please write a lead before submitting!</span>";
+      return;
+    }
+    if (lead.length > 200) {
+      feedback.innerHTML = "<span style='color:red;'>Try to make your lead one strong sentence (under 200 characters).</span>";
+      return;
+    }
+    feedback.innerHTML = "<strong>Great work!</strong> Your lead has been submitted.";
+  }
+</script>
+
+</body>
+</html>
